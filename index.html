@@ -6,12 +6,16 @@
   <title>个人主页 & 作品集</title>
   <style>
     :root {
-      --bg-color: #0f172a;
-      --card-bg: #1e293b;
-      --accent-color: #00a1d6;
-      --accent-gradient: linear-gradient(135deg, #00a1d6, #60a5fa);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      /* 浅米色调配色方案 */
+      --bg-color: #f6f4ee;          /* 温暖浅米色背景 */
+      --card-bg: #ffffff;          /* 纯白卡片，增强对比度 */
+      --card-sub-bg: #efece4;      /* 次级背景/标签背景 */
+      --accent-color: #b8623b;      /* 暖红棕/琥珀色作为点缀色 */
+      --accent-hover: #9c4f2b;
+      --accent-gradient: linear-gradient(135deg, #b8623b, #d9825b);
+      --text-main: #2c2825;        /* 深炭灰文本，比纯黑更柔和 */
+      --text-muted: #736c65;       /* 柔和灰褐色副文本 */
+      --border-color: #e2ddd3;     /* 浅温和边框 */
       --card-radius: 12px;
     }
 
@@ -23,8 +27,8 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background-color: var(--bg-color);
       color: var(--text-main);
+      background-color: var(--bg-color);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -32,12 +36,13 @@
 
     /* 顶部导航栏 */
     header {
-      background-color: rgba(30, 41, 59, 0.8);
-      backdrop-filter: blur(10px);
+      background-color: rgba(246, 244, 238, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
       z-index: 100;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid var(--border-color);
     }
 
     .nav-container {
@@ -76,13 +81,12 @@
 
     .tab-btn:hover {
       color: var(--text-main);
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: var(--card-sub-bg);
     }
 
     .tab-btn.active {
-      color: var(--text-main);
-      background-color: rgba(0, 161, 214, 0.2);
-      border: 1px solid rgba(0, 161, 214, 0.4);
+      color: var(--card-bg);
+      background-color: var(--accent-color);
     }
 
     /* 主体内容区域 */
@@ -113,8 +117,8 @@
       background-color: var(--card-bg);
       border-radius: var(--card-radius);
       padding: 2.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
       max-width: 900px;
       margin: 0 auto;
     }
@@ -129,7 +133,7 @@
 
     .about-card p {
       line-height: 1.8;
-      color: #cbd5e1;
+      color: var(--text-main);
       margin-bottom: 1.2rem;
       font-size: 1.05rem;
     }
@@ -142,12 +146,13 @@
     }
 
     .tag {
-      background-color: rgba(0, 161, 214, 0.15);
+      background-color: var(--card-sub-bg);
       color: var(--accent-color);
-      padding: 0.3rem 0.8rem;
+      padding: 0.38rem 0.85rem;
       border-radius: 20px;
       font-size: 0.85rem;
-      font-weight: 500;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
     }
 
     /* 作品集展示 板块样式 */
@@ -187,15 +192,15 @@
       background-color: var(--card-bg);
       border-radius: var(--card-radius);
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     }
 
     .video-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 12px 30px rgba(0, 161, 214, 0.15);
-      border-color: rgba(0, 161, 214, 0.3);
+      box-shadow: 0 12px 28px rgba(184, 98, 59, 0.12);
+      border-color: rgba(184, 98, 59, 0.4);
     }
 
     .iframe-wrapper {
@@ -219,7 +224,7 @@
       padding: 2rem;
       color: var(--text-muted);
       font-size: 0.85rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-top: 1px solid var(--border-color);
       margin-top: auto;
     }
   </style>
@@ -231,8 +236,8 @@
     <div class="nav-container">
       <div class="logo">音乐作品集</div>
       <nav class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('about')">关于我</button>
-        <button class="tab-btn" onclick="switchTab('portfolio')">作品集展示</button>
+        <button class="tab-btn active" onclick="switchTab('about', event)">关于我</button>
+        <button class="tab-btn" onclick="switchTab('portfolio', event)">作品集展示</button>
       </nav>
     </div>
   </header>
@@ -343,22 +348,20 @@
 
   <!-- 切换 Tab 逻辑 -->
   <script>
-    function switchTab(tabId) {
-      // 隐藏所有板块内容
+    function switchTab(tabId, evt) {
       document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.remove('active');
       });
 
-      // 移除所有按钮高亮
       document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('active');
       });
 
-      // 显示选中的板块
       document.getElementById(tabId).classList.add('active');
 
-      // 激活对应按钮
-      event.currentTarget.classList.add('active');
+      if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add('active');
+      }
     }
   </script>
 
