@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PV配乐展示</title>
+  <title>个人主页 & 作品集</title>
   <style>
     :root {
       --bg-color: #0f172a;
       --card-bg: #1e293b;
+      --accent-color: #00a1d6;
+      --accent-gradient: linear-gradient(135deg, #00a1d6, #60a5fa);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
       --card-radius: 12px;
     }
 
@@ -20,35 +24,156 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background-color: var(--bg-color);
-      color: #f8fafc;
-      padding: 3rem 1rem;
+      color: var(--text-main);
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
+    /* 顶部导航栏 */
     header {
-      text-align: center;
-      max-width: 800px;
-      margin: 0 auto 3rem auto;
+      background-color: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    header h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #00a1d6, #60a5fa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 1px;
-    }
-
-    .container {
+    .nav-container {
       max-width: 1280px;
       margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      color: var(--text-main);
+      background-color: rgba(0, 161, 214, 0.2);
+      border: 1px solid rgba(0, 161, 214, 0.4);
+    }
+
+    /* 主体内容区域 */
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 1rem;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 关于我 板块样式 */
+    .about-card {
+      background-color: var(--card-bg);
+      border-radius: var(--card-radius);
+      padding: 2.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .about-card h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .about-card p {
+      line-height: 1.8;
+      color: #cbd5e1;
+      margin-bottom: 1.2rem;
+      font-size: 1.05rem;
+    }
+
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .tag {
+      background-color: rgba(0, 161, 214, 0.15);
+      color: var(--accent-color);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* 作品集展示 板块样式 */
+    .portfolio-section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .portfolio-section-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 1.5rem;
+      background: var(--accent-color);
+      border-radius: 2px;
     }
 
     .video-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
       gap: 2rem;
+      margin-top: 1rem;
     }
 
     @media (max-width: 540px) {
@@ -88,89 +213,154 @@
       height: 100%;
       border: none;
     }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: auto;
+    }
   </style>
 </head>
 <body>
 
+  <!-- 导航栏 -->
   <header>
-    <h1>PV配乐展示</h1>
+    <div class="nav-container">
+      <div class="logo">音乐作品集</div>
+      <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('about')">关于我</button>
+        <button class="tab-btn" onclick="switchTab('portfolio')">作品集展示</button>
+      </nav>
+    </div>
   </header>
 
-  <main class="container">
-    <div class="video-grid">
+  <main>
+    <!-- 板块 1：关于我 -->
+    <section id="about" class="tab-content active">
+      <div class="about-card">
+        <h2>关于我</h2>
+        <p>你好，我是音乐作曲家 <strong>Yaoyang Liu（刘耀阳）</strong>。</p>
+        <p>我专注于影视及游戏音乐创作、PV配乐与声音设计。擅长将古典管弦乐（Hybrid Orchestral）与现代电子 EDM、爵士及多种现代音乐元素融合，为高能量战斗、机甲题材、游戏场景以及多元文化背景制作具有强视觉张力与叙事感的效果音轨。</p>
+        <p>在配乐创作中，我注重乐器编配的丰富度与氛围的精准把控，力求为每一个视觉画面量身打造最动听的音乐体验。</p>
+        
+        <div class="tag-container">
+          <span class="tag">音乐作曲 / 编曲</span>
+          <span class="tag">混合管弦 (Hybrid Orchestra)</span>
+          <span class="tag">游戏/PV配乐</span>
+          <span class="tag">电子 EDM 融合</span>
+          <span class="tag">声音设计</span>
+        </div>
+      </div>
+    </section>
 
-      <!-- 视频 1 -->
-      <div class="video-card">
-        <div class="iframe-wrapper">
-          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=114488443406059&bvid=BV1BdEMzQEqq&cid=29986653595&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+    <!-- 板块 2：作品集展示 -->
+    <section id="portfolio" class="tab-content">
+      
+      <!-- 子栏目：PV配乐展示 -->
+      <div class="portfolio-section-title">PV配乐展示</div>
+
+      <div class="video-grid">
+        <!-- 视频 1 -->
+        <div class="video-card">
+          <div class="iframe-wrapper">
+            <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=114488443406059&bvid=BV1BdEMzQEqq&cid=29986653595&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+          </div>
+        </div>
+
+        <!-- 视频 2 -->
+        <div class="video-card">
+          <div class="iframe-wrapper">
+            <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115534720933643&bvid=BV1gyCjBzExh&cid=33934675405&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+          </div>
+        </div>
+
+        <!-- 视频 3 -->
+        <div class="video-card">
+          <div class="iframe-wrapper">
+            <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115049507067654&bvid=BV1YcYtzwEpe&cid=31780702166&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+          </div>
+        </div>
+
+        <!-- 视频 4 -->
+        <div class="video-card">
+          <div class="iframe-wrapper">
+            <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115193254256471&bvid=BV1hip5zeEvM&cid=32343526993&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+          </div>
+        </div>
+
+        <!-- 视频 5 -->
+        <div class="video-card">
+          <div class="iframe-wrapper">
+            <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115080981119302&bvid=BV1FaeLzjE3L&cid=31904695083&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+          </div>
+        </div>
+
+        <!-- 视频 6 -->
+        <div class="video-card">
+          <div class="iframe-wrapper">
+            <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115554249609865&bvid=BV1PXC2B1E8F&cid=34023279723&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+          </div>
+        </div>
+
+        <!-- 视频 7 -->
+        <div class="video-card">
+          <div class="iframe-wrapper">
+            <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=114067939262906&bvid=BV1siP5eJELX&cid=28576253905&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+          </div>
+        </div>
+
+        <!-- 视频 8 -->
+        <div class="video-card">
+          <div class="iframe-wrapper">
+            <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113275232585995&bvid=BV1hw24YJEV5&cid=26207913705&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+          </div>
+        </div>
+
+        <!-- 视频 9 -->
+        <div class="video-card">
+          <div class="iframe-wrapper">
+            <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113684512834074&bvid=BV1z1kyYuEfo&cid=27436123268&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+          </div>
+        </div>
+
+        <!-- 视频 10 -->
+        <div class="video-card">
+          <div class="iframe-wrapper">
+            <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113582876459635&bvid=BV1my6KYBENp&cid=27142065641&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+          </div>
         </div>
       </div>
 
-      <!-- 视频 2 -->
-      <div class="video-card">
-        <div class="iframe-wrapper">
-          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115534720933643&bvid=BV1gyCjBzExh&cid=33934675405&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-        </div>
-      </div>
-
-      <!-- 视频 3 -->
-      <div class="video-card">
-        <div class="iframe-wrapper">
-          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115049507067654&bvid=BV1YcYtzwEpe&cid=31780702166&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-        </div>
-      </div>
-
-      <!-- 视频 4 -->
-      <div class="video-card">
-        <div class="iframe-wrapper">
-          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115193254256471&bvid=BV1hip5zeEvM&cid=32343526993&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-        </div>
-      </div>
-
-      <!-- 视频 5 -->
-      <div class="video-card">
-        <div class="iframe-wrapper">
-          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115080981119302&bvid=BV1FaeLzjE3L&cid=31904695083&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-        </div>
-      </div>
-
-      <!-- 视频 6 -->
-      <div class="video-card">
-        <div class="iframe-wrapper">
-          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115554249609865&bvid=BV1PXC2B1E8F&cid=34023279723&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-        </div>
-      </div>
-
-      <!-- 视频 7 -->
-      <div class="video-card">
-        <div class="iframe-wrapper">
-          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=114067939262906&bvid=BV1siP5eJELX&cid=28576253905&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-        </div>
-      </div>
-
-      <!-- 视频 8 -->
-      <div class="video-card">
-        <div class="iframe-wrapper">
-          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113275232585995&bvid=BV1hw24YJEV5&cid=26207913705&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-        </div>
-      </div>
-
-      <!-- 视频 9 -->
-      <div class="video-card">
-        <div class="iframe-wrapper">
-          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113684512834074&bvid=BV1z1kyYuEfo&cid=27436123268&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-        </div>
-      </div>
-
-      <!-- 视频 10 -->
-      <div class="video-card">
-        <div class="iframe-wrapper">
-          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113582876459635&bvid=BV1my6KYBENp&cid=27142065641&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-        </div>
-      </div>
-
-    </div>
+    </section>
   </main>
+
+  <footer>
+    <p>© Yaoyang Liu. All Rights Reserved.</p>
+  </footer>
+
+  <!-- 切换 Tab 逻辑 -->
+  <script>
+    function switchTab(tabId) {
+      // 隐藏所有板块内容
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+
+      // 移除所有按钮高亮
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      // 显示选中的板块
+      document.getElementById(tabId).classList.add('active');
+
+      // 激活对应按钮
+      event.currentTarget.classList.add('active');
+    }
+  </script>
 
 </body>
 </html>
