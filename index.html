@@ -123,8 +123,66 @@
       margin: 0 auto;
     }
 
-    .about-section {
+    /* 个人信息头部（含照片） */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      padding-bottom: 2rem;
       margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    /* 照片融边框架 */
+    .profile-photo-wrapper {
+      position: relative;
+      flex-shrink: 0;
+      width: 200px;
+      height: 240px;
+      padding: 8px;
+      background: linear-gradient(145deg, #ffffff, #efece4);
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 8px 24px rgba(44, 40, 37, 0.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .profile-photo-wrapper:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(184, 98, 59, 0.12);
+    }
+
+    .profile-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .profile-intro h1 {
+      font-size: 2.2rem;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .profile-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+    }
+
+    .profile-summary {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+
+    .about-section {
+      margin-bottom: 2.2rem;
     }
 
     .about-section:last-child {
@@ -132,7 +190,7 @@
     }
 
     .about-card h2 {
-      font-size: 1.75rem;
+      font-size: 1.6rem;
       margin-bottom: 1.25rem;
       color: var(--accent-color);
       display: flex;
@@ -198,6 +256,20 @@
       grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
       gap: 2rem;
       margin-top: 1rem;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+      }
+
+      .profile-photo-wrapper {
+        width: 170px;
+        height: 210px;
+      }
     }
 
     @media (max-width: 540px) {
@@ -266,6 +338,23 @@
     <section id="about" class="tab-content active">
       <div class="about-card">
         
+        <!-- 头部个人简介与照片框 -->
+        <div class="profile-header">
+          <div class="profile-photo-wrapper">
+            <img src="SP.jpg" alt="个人照片" class="profile-photo">
+          </div>
+          <div class="profile-intro">
+            <h1>职业作曲家 & 音乐制作人</h1>
+            <div class="profile-title">影视配乐 / 游戏音效与配乐 / 商业广告音乐</div>
+            <p class="profile-summary">毕业于芝加哥哥伦比亚学院影视配乐专业，师从作曲家 Kubilay Uner。拥有扎实的古典音乐功底与完备的工业化制作体系。</p>
+            <div class="tag-container">
+              <span class="tag">影视/游戏配乐</span>
+              <span class="tag">管弦乐编写</span>
+              <span class="tag">全链条音乐生产</span>
+            </div>
+          </div>
+        </div>
+
         <!-- 专业经历 -->
         <div class="about-section">
           <h2>专业经历</h2>
@@ -284,11 +373,9 @@
           <p>能够有着良好的审美判断和细节把控能力，热衷于钻研新的音乐语言与技术手段。在团队协作中注重倾听与沟通，工作态度积极稳定，具备良好的责任感与时间管理能力。</p>
           
           <div class="tag-container">
-            <span class="tag">影视/游戏配乐</span>
             <span class="tag">管弦乐编写 & 电子融合</span>
             <span class="tag">Logic Pro / Cubase / Pro Tools</span>
             <span class="tag">Sibelius 制谱</span>
-            <span class="tag">全链条音乐生产</span>
             <span class="tag">商业广告配乐</span>
           </div>
         </div>
