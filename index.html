@@ -8,13 +8,13 @@
     :root {
       /* 浅米色调配色方案 */
       --bg-color: #f6f4ee;          /* 温暖浅米色背景 */
-      --card-bg: #ffffff;          /* 纯白卡片，增强对比度 */
+      --card-bg: #ffffff;          /* 纯白卡片 */
       --card-sub-bg: #efece4;      /* 次级背景/标签背景 */
-      --accent-color: #b8623b;      /* 暖红棕/琥珀色作为点缀色 */
+      --accent-color: #b8623b;      /* 暖红棕/琥珀色 */
       --accent-hover: #9c4f2b;
       --accent-gradient: linear-gradient(135deg, #b8623b, #d9825b);
-      --text-main: #2c2825;        /* 深炭灰文本，比纯黑更柔和 */
-      --text-muted: #736c65;       /* 柔和灰褐色副文本 */
+      --text-main: #2c2825;        /* 深炭灰文本 */
+      --text-muted: #736c65;       /* 柔和灰褐色文本 */
       --border-color: #e2ddd3;     /* 浅温和边框 */
       --card-radius: 12px;
     }
@@ -119,30 +119,49 @@
       padding: 2.5rem;
       border: 1px solid var(--border-color);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
     }
 
+    .about-section {
+      margin-bottom: 2rem;
+    }
+
+    .about-section:last-child {
+      margin-bottom: 0;
+    }
+
     .about-card h2 {
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: 1.75rem;
+      margin-bottom: 1.25rem;
+      color: var(--accent-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .about-card h2::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 1.3rem;
+      background: var(--accent-color);
+      border-radius: 2px;
     }
 
     .about-card p {
-      line-height: 1.8;
+      line-height: 1.85;
       color: var(--text-main);
       margin-bottom: 1.2rem;
-      font-size: 1.05rem;
+      font-size: 1.02rem;
+      text-align: justify;
     }
 
     .tag-container {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-top: 1.5rem;
+      margin-top: 1.2rem;
     }
 
     .tag {
@@ -246,18 +265,34 @@
     <!-- 板块 1：关于我 -->
     <section id="about" class="tab-content active">
       <div class="about-card">
-        <h2>关于我</h2>
-        <p>你好，我是音乐作曲家 <strong>Yaoyang Liu（刘耀阳）</strong>。</p>
-        <p>我专注于影视及游戏音乐创作、PV配乐与声音设计。擅长将古典管弦乐（Hybrid Orchestral）与现代电子 EDM、爵士及多种现代音乐元素融合，为高能量战斗、机甲题材、游戏场景以及多元文化背景制作具有强视觉张力与叙事感的效果音轨。</p>
-        <p>在配乐创作中，我注重乐器编配的丰富度与氛围的精准把控，力求为每一个视觉画面量身打造最动听的音乐体验。</p>
         
-        <div class="tag-container">
-          <span class="tag">音乐作曲 / 编曲</span>
-          <span class="tag">混合管弦 (Hybrid Orchestra)</span>
-          <span class="tag">游戏/PV配乐</span>
-          <span class="tag">电子 EDM 融合</span>
-          <span class="tag">声音设计</span>
+        <!-- 专业经历 -->
+        <div class="about-section">
+          <h2>专业经历</h2>
+          <p>自幼学习钢琴，具备深厚的古典音乐素养与扎实的视唱练耳功底。本科学习录音艺术专业，系统掌握音频工程逻辑，后赴美深造于芝加哥哥伦比亚学院，师从作曲家 Kubilay Uner 专攻影视配乐。</p>
+          <p>凭借卓越的创作表现，作品多次获得 Jongnic Bontemps（《变形金刚》）、Lolita Ritmanis（《蝙蝠侠》）及 Philip Klein（《许愿神龙》）等好莱坞业内作曲家的高度认可与专业评价。</p>
+          <p>研究生毕业后，曾于好莱坞音乐工作室 Leaning Pine Studio 实习工作。该工作室的代表作有《许愿神龙》，《猩球崛起》，《饥饿游戏》以及《使命召唤》等美国一线电影电视剧以及游戏项目。在工作室期间，曾参与了美剧《The Madness》的音乐编辑、美剧《High Potential》的制谱整理、美剧《La Dolce Villa》的指挥助理及《The Last Full Measure》的交响曲改编等核心环节。</p>
+          <p>作为职业作曲家，在不同类型的商业项目中都有所涉猎。在游戏领域，作为 AVIA Games 的长期合作伙伴，深度参与《Solitaire》《8 Ball Strike》等多款游戏的音乐开发，同时也参与了国内众多游戏大厂的多款知名游戏的 PV 宣传片配乐工作；在商业广告领域，累计了极为丰富的品牌合作履历，服务客户包括：FILA、EA、飞猪、竹叶青、杭州地铁、鄂尔多斯、Clinique（倩碧）、红星美凯龙、壹基金、奔驰、中粮、腾讯会议以及特斯拉。在电影电视剧领域，除了参与多个高水准的商业项目外，也与多位青年导演合作，所参与的短片以及长片项目多个入围如北京青年电影节，LA Shorts Festival 以及两岸青年影展等电影节奖项当中。</p>
+          <p>在参与的诸多项目中，具备能动地把控项目艺术水准的能力，能够精准转化多边需求，确保各类型商业项目的听觉效果高水准落地。</p>
         </div>
+
+        <!-- 专业技能 -->
+        <div class="about-section">
+          <h2>专业技能</h2>
+          <p>具备多样化音乐风格的创作与制作能力，从传统管弦乐编写到现代电子元素的融合运用都能灵活驾驭，能够高效适配广告、影视、游戏等不同类型项目的音乐需求。熟悉各类配器风格与音色语汇，具备清晰的音乐叙事能力。</p>
+          <p>拥有完备的音乐工程知识体系，精通 Logic Pro、Cubase、Pro Tools 等数字音频工作站及 Sibelius 谱面制作，具备从作曲编曲、实录指导到录音剪辑、混音母带的全链条工业化生产能力。能够在不同项目环境下灵活切换生产平台并搭建高效的软件框架，确保效率与品质并重。</p>
+          <p>能够有着良好的审美判断和细节把控能力，热衷于钻研新的音乐语言与技术手段。在团队协作中注重倾听与沟通，工作态度积极稳定，具备良好的责任感与时间管理能力。</p>
+          
+          <div class="tag-container">
+            <span class="tag">影视/游戏配乐</span>
+            <span class="tag">管弦乐编写 & 电子融合</span>
+            <span class="tag">Logic Pro / Cubase / Pro Tools</span>
+            <span class="tag">Sibelius 制谱</span>
+            <span class="tag">全链条音乐生产</span>
+            <span class="tag">商业广告配乐</span>
+          </div>
+        </div>
+
       </div>
     </section>
 
