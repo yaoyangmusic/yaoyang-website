@@ -1,256 +1,250 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的个人作品集 | 视频与音乐</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>视频作品展示</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --accent-color: #00a1d6; /* Bilibili 经典主题色 */
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --card-radius: 12px;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #0d121f;
-            color: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        header {
-            text-align: center;
-            margin-top: 30px;
-            margin-bottom: 30px;
-        }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
 
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 8px;
-        }
+    header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 3rem auto;
+    }
 
-        p.subtitle {
-            font-size: 1rem;
-            color: #8291a9;
-        }
+    header h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #00a1d6, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-        main {
-            width: 100%;
-            max-width: 900px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
+    header p {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
 
-        /* 卡片容器 */
-        .card {
-            background: #171e2d;
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-            border: 1px solid #273143;
-        }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
 
-        .section-title {
-            font-size: 1.25rem;
-            color: #31aef6;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-        }
+    /* 视频网格布局：电脑端两列，手机端单列 */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 2rem;
+    }
 
-        /* 16:9 响应式视频容器 */
-        .video-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 12px;
-            background-color: #000;
-        }
+    /* 手机屏幕适配 */
+    @media (max-width: 540px) {
+      .video-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
 
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+    .video-card {
+      background-color: var(--card-bg);
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        /* 分类标签样式 (Tab) */
-        .category-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #273143;
-            padding-bottom: 12px;
-            flex-wrap: wrap;
-        }
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0, 161, 214, 0.15);
+      border-color: rgba(0, 161, 214, 0.3);
+    }
 
-        .tab-btn {
-            background: transparent;
-            border: 1px solid #273143;
-            color: #8291a9;
-            padding: 6px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        }
+    /* 保持 16:9 响应式比例 */
+    .iframe-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      background-color: #000;
+    }
 
-        .tab-btn:hover {
-            border-color: #31aef6;
-            color: #31aef6;
-        }
+    .iframe-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
 
-        .tab-btn.active {
-            background: #31aef6;
-            border-color: #31aef6;
-            color: #0d121f;
-            font-weight: 600;
-        }
+    .video-info {
+      padding: 1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        /* 音频列表样式 */
-        .audio-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+    .video-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
 
-        .audio-item {
-            background: #0d121f;
-            padding: 16px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            border: 1px solid #273143;
-        }
-
-        .audio-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .audio-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #eef2f7;
-        }
-
-        .audio-tag {
-            font-size: 0.75rem;
-            background: #273143;
-            color: #c0cbda;
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-
-        audio {
-            width: 100%;
-            height: 40px;
-            border-radius: 6px;
-        }
-
-        footer {
-            margin-top: auto;
-            padding: 40px 0 20px 0;
-            text-align: center;
-            color: #526078;
-            font-size: 0.875rem;
-        }
-    </style>
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background-color: rgba(0, 161, 214, 0.15);
+      color: var(--accent-color);
+      font-weight: 500;
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>我的个人作品集</h1>
-        <p class="subtitle">视频与音乐精选</p>
-    </header>
+  <header>
+    <h1>视频作品展示</h1>
+    <p>精彩内容合集</p>
+  </header>
 
-    <main>
-        <section class="card">
-            <h2 class="section-title">🎬 视频展示</h2>
-            <div class="video-container">
-                <iframe src="https://player.bilibili.com/player.html?isOutside=true&aid=116853695319365&bvid=BV1PWTW68EK4&cid=39606225099&p=1&high_quality=1" 
-                        scrolling="no" 
-                        border="0" 
-                        frameborder="no" 
-                        framespacing="0" 
-                        allowfullscreen="true">
-                </iframe>
-            </div>
-        </section>
+  <main class="container">
+    <div class="video-grid">
 
-        <section class="card">
-            <h2 class="section-title">🎵 音乐作品</h2>
-            
-            <div class="category-tabs">
-                <button class="tab-btn active" onclick="filterCategory('all', this)">全部</button>
-                <button class="tab-btn" onclick="filterCategory('original', this)">原创作品</button>
-                <button class="tab-btn" onclick="filterCategory('orchestral', this)">管弦 / Hybrid</button>
-                <button class="tab-btn" onclick="filterCategory('demo', this)">Demo 试听</button>
-            </div>
+      <!-- 视频 1 -->
+      <div class="video-card">
+        <div class="iframe-wrapper">
+          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=114488443406059&bvid=BV1BdEMzQEqq&cid=29986653595&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+        <div class="video-info">
+          <span class="video-title">视频作品 #01</span>
+          <span class="badge">Bilibili</span>
+        </div>
+      </div>
 
-            <div class="audio-list">
-                
-                <div class="audio-item" data-category="original">
-                    <div class="audio-info">
-                        <span class="audio-title">Meadow Landscape</span>
-                        <span class="audio-tag">原创作品</span>
-                    </div>
-                    <audio controls src="./audio/Meadow Landscape.mp3"></audio>
-                </div>
+      <!-- 视频 2 -->
+      <div class="video-card">
+        <div class="iframe-wrapper">
+          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115534720933643&bvid=BV1gyCjBzExh&cid=33934675405&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+        <div class="video-info">
+          <span class="video-title">视频作品 #02</span>
+          <span class="badge">Bilibili</span>
+        </div>
+      </div>
 
-                <div class="audio-item" data-category="orchestral">
-                    <div class="audio-info">
-                        <span class="audio-title">Dream Illumination</span>
-                        <span class="audio-tag">管弦 / Hybrid</span>
-                    </div>
-                    <audio controls src="./audio/song2.mp3"></audio>
-                </div>
+      <!-- 视频 3 -->
+      <div class="video-card">
+        <div class="iframe-wrapper">
+          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115049507067654&bvid=BV1YcYtzwEpe&cid=31780702166&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+        <div class="video-info">
+          <span class="video-title">视频作品 #03</span>
+          <span class="badge">Bilibili</span>
+        </div>
+      </div>
 
-                <div class="audio-item" data-category="demo">
-                    <div class="audio-info">
-                        <span class="audio-title">第三首作品名称 (Demo)</span>
-                        <span class="audio-tag">Demo 试听</span>
-                    </div>
-                    <audio controls src="./audio/song3.mp3"></audio>
-                </div>
+      <!-- 视频 4 -->
+      <div class="video-card">
+        <div class="iframe-wrapper">
+          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115193254256471&bvid=BV1hip5zeEvM&cid=32343526993&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+        <div class="video-info">
+          <span class="video-title">视频作品 #04</span>
+          <span class="badge">Bilibili</span>
+        </div>
+      </div>
 
-            </div>
-        </section>
-    </main>
+      <!-- 视频 5 -->
+      <div class="video-card">
+        <div class="iframe-wrapper">
+          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115080981119302&bvid=BV1FaeLzjE3L&cid=31904695083&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+        <div class="video-info">
+          <span class="video-title">视频作品 #05</span>
+          <span class="badge">Bilibili</span>
+        </div>
+      </div>
 
-    <footer>
-        <p>© 2026 My Website. Powered by Vercel.</p>
-    </footer>
+      <!-- 视频 6 -->
+      <div class="video-card">
+        <div class="iframe-wrapper">
+          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115554249609865&bvid=BV1PXC2B1E8F&cid=34023279723&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+        <div class="video-info">
+          <span class="video-title">视频作品 #06</span>
+          <span class="badge">Bilibili</span>
+        </div>
+      </div>
 
-    <script>
-        function filterCategory(category, btn) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+      <!-- 视频 7 -->
+      <div class="video-card">
+        <div class="iframe-wrapper">
+          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=114067939262906&bvid=BV1siP5eJELX&cid=28576253905&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+        <div class="video-info">
+          <span class="video-title">视频作品 #07</span>
+          <span class="badge">Bilibili</span>
+        </div>
+      </div>
 
-            const items = document.querySelectorAll('.audio-item');
-            items.forEach(item => {
-                if (category === 'all' || item.getAttribute('data-category') === category) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        }
-    </script>
+      <!-- 视频 8 -->
+      <div class="video-card">
+        <div class="iframe-wrapper">
+          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113275232585995&bvid=BV1hw24YJEV5&cid=26207913705&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+        <div class="video-info">
+          <span class="video-title">视频作品 #08</span>
+          <span class="badge">Bilibili</span>
+        </div>
+      </div>
+
+      <!-- 视频 9 -->
+      <div class="video-card">
+        <div class="iframe-wrapper">
+          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113684512834074&bvid=BV1z1kyYuEfo&cid=27436123268&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+        <div class="video-info">
+          <span class="video-title">视频作品 #09</span>
+          <span class="badge">Bilibili</span>
+        </div>
+      </div>
+
+      <!-- 视频 10 -->
+      <div class="video-card">
+        <div class="iframe-wrapper">
+          <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113582876459635&bvid=BV1my6KYBENp&cid=27142065641&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+        </div>
+        <div class="video-info">
+          <span class="video-title">视频作品 #10</span>
+          <span class="badge">Bilibili</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
 </body>
 </html>
