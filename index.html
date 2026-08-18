@@ -133,7 +133,6 @@
       border-bottom: 1px solid var(--border-color);
     }
 
-    /* 照片融边框架 */
     .profile-photo-wrapper {
       position: relative;
       flex-shrink: 0;
@@ -346,6 +345,113 @@
       border-radius: 2px;
     }
 
+    /* 方案3 极简音频播放器样式 */
+    .playlist-player {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      margin-bottom: 3rem;
+    }
+
+    .playlist-header {
+      padding: 1.25rem 1.5rem;
+      background: var(--card-sub-bg);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .playlist-info h3 {
+      font-size: 1.1rem;
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    .playlist-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .btn-play-main {
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(184, 98, 59, 0.25);
+    }
+
+    .btn-play-main:hover {
+      background: var(--accent-hover);
+      transform: scale(1.05);
+    }
+
+    .track-list {
+      list-style: none;
+    }
+
+    .track-item {
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: background 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .track-item:last-child {
+      border-bottom: none;
+    }
+
+    .track-item:hover {
+      background-color: rgba(239, 236, 228, 0.5);
+    }
+
+    .track-item.active {
+      background-color: var(--card-sub-bg);
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+
+    .equalizer-icon {
+      display: none;
+      gap: 2px;
+      align-items: flex-end;
+      height: 12px;
+    }
+
+    .track-item.active .equalizer-icon {
+      display: inline-flex;
+    }
+
+    .equalizer-bar {
+      width: 2px;
+      background: var(--accent-color);
+      animation: bounce 0.8s ease-in-out infinite alternate;
+    }
+
+    .equalizer-bar:nth-child(2) { animation-delay: 0.2s; }
+    .equalizer-bar:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0% { height: 3px; }
+      100% { height: 12px; }
+    }
+
+    /* 视频网格 */
     .video-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
@@ -353,7 +459,6 @@
       margin-top: 1rem;
     }
 
-    /* 响应式调整 */
     @media (max-width: 768px) {
       .profile-header {
         flex-direction: column;
@@ -416,6 +521,9 @@
   </style>
 </head>
 <body>
+
+  <!-- 隐藏的通用音频元素 -->
+  <audio id="global-audio" style="display: none;"></audio>
 
   <!-- 导航栏 -->
   <header>
@@ -481,18 +589,13 @@
 
     <!-- 板块 2：项目案例 -->
     <section id="cases" class="tab-content">
-      
-      <!-- 二级筛选栏 -->
       <div class="case-filter-bar">
         <button class="sub-filter-btn active" onclick="filterCases('all', event)">全部项目</button>
         <button class="sub-filter-btn" onclick="filterCases('film', event)">影视项目</button>
         <button class="sub-filter-btn" onclick="filterCases('game', event)">游戏项目</button>
       </div>
 
-      <!-- 项目案例网格 -->
       <div class="case-grid">
-        
-        <!-- 影视项目 -->
         <div class="case-card" data-category="film">
           <div class="case-header">
             <div class="case-title">《The Madness》</div>
@@ -538,7 +641,6 @@
           <div class="case-role">职责：原创配乐 / 作曲编曲</div>
         </div>
 
-        <!-- 游戏项目 -->
         <div class="case-card" data-category="game">
           <div class="case-header">
             <div class="case-title">《Solitaire》</div>
@@ -565,82 +667,126 @@
           <div class="case-desc">参与多家国内知名游戏大厂多款核心上线游戏 PV 宣传片及版本 CG 配乐。</div>
           <div class="case-role">职责：宣传片配乐 / 音效创作</div>
         </div>
-
       </div>
-
     </section>
 
     <!-- 板块 3：作品集展示 -->
     <section id="portfolio" class="tab-content">
       
-      <!-- 子栏目：PV配乐展示 -->
+      <!-- 方案 3：音频 Demo 试听歌单 -->
+      <div class="portfolio-section-title">音频 Demo 试听</div>
+      
+      <div class="playlist-player">
+        <div class="playlist-header">
+          <div class="playlist-info">
+            <h3 id="current-track-name">选择上方音频试听</h3>
+            <p>点击列表中的曲目无缝播放（替换 src 填入你的 mp3 链接）</p>
+          </div>
+          <button class="btn-play-main" id="playlist-play-btn" onclick="togglePlayMain()">▶</button>
+        </div>
+        <ul class="track-list">
+          <li class="track-item" data-src="audio/demo1.mp3" onclick="playTrack(this, '机甲战斗 PVP 核心音乐 (Hybrid EDM)')">
+            <span>01. 机甲战斗 PVP 核心音乐 (Hybrid EDM)</span>
+            <div class="equalizer-icon">
+              <div class="equalizer-bar"></div>
+              <div class="equalizer-bar"></div>
+              <div class="equalizer-bar"></div>
+            </div>
+          </li>
+          <li class="track-item" data-src="audio/demo2.mp3" onclick="playTrack(this, '浪漫管弦 - 国王王后阶段 Stage')">
+            <span>02. 浪漫管弦 - 国王王后阶段 Stage</span>
+            <div class="equalizer-icon">
+              <div class="equalizer-bar"></div>
+              <div class="equalizer-bar"></div>
+              <div class="equalizer-bar"></div>
+            </div>
+          </li>
+          <li class="track-item" data-src="audio/demo3.mp3" onclick="playTrack(this, '中东危险氛围 Demo (Hybrid Orchestra)')">
+            <span>03. 中东危险氛围 Demo (Hybrid Orchestra)</span>
+            <div class="equalizer-icon">
+              <div class="equalizer-bar"></div>
+              <div class="equalizer-bar"></div>
+              <div class="equalizer-bar"></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- PV配乐展示 -->
       <div class="portfolio-section-title">PV配乐展示</div>
 
       <div class="video-grid">
-        <!-- 视频 1 -->
+        <!-- 新新增视频 1 -->
+        <div class="video-card">
+          <div class="iframe-wrapper">
+            <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115080981119302&bvid=BV1FaeLzjE3L&cid=31904695083&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+          </div>
+        </div>
+
+        <!-- 新新增视频 2 -->
+        <div class="video-card">
+          <div class="iframe-wrapper">
+            <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=116853695319365&bvid=BV1PWTW68EK4&cid=39606225099&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+          </div>
+        </div>
+
+        <!-- 原视频 1 -->
         <div class="video-card">
           <div class="iframe-wrapper">
             <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=114488443406059&bvid=BV1BdEMzQEqq&cid=29986653595&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
           </div>
         </div>
 
-        <!-- 视频 2 -->
+        <!-- 原视频 2 -->
         <div class="video-card">
           <div class="iframe-wrapper">
             <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115534720933643&bvid=BV1gyCjBzExh&cid=33934675405&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
           </div>
         </div>
 
-        <!-- 视频 3 -->
+        <!-- 原视频 3 -->
         <div class="video-card">
           <div class="iframe-wrapper">
             <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115049507067654&bvid=BV1YcYtzwEpe&cid=31780702166&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
           </div>
         </div>
 
-        <!-- 视频 4 -->
+        <!-- 原视频 4 -->
         <div class="video-card">
           <div class="iframe-wrapper">
             <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115193254256471&bvid=BV1hip5zeEvM&cid=32343526993&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
           </div>
         </div>
 
-        <!-- 视频 5 -->
-        <div class="video-card">
-          <div class="iframe-wrapper">
-            <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115080981119302&bvid=BV1FaeLzjE3L&cid=31904695083&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-          </div>
-        </div>
-
-        <!-- 视频 6 -->
+        <!-- 原视频 5 -->
         <div class="video-card">
           <div class="iframe-wrapper">
             <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115554249609865&bvid=BV1PXC2B1E8F&cid=34023279723&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
           </div>
         </div>
 
-        <!-- 视频 7 -->
+        <!-- 原视频 6 -->
         <div class="video-card">
           <div class="iframe-wrapper">
             <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=114067939262906&bvid=BV1siP5eJELX&cid=28576253905&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
           </div>
         </div>
 
-        <!-- 视频 8 -->
+        <!-- 原视频 7 -->
         <div class="video-card">
           <div class="iframe-wrapper">
             <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113275232585995&bvid=BV1hw24YJEV5&cid=26207913705&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
           </div>
         </div>
 
-        <!-- 视频 9 -->
+        <!-- 原视频 8 -->
         <div class="video-card">
           <div class="iframe-wrapper">
             <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113684512834074&bvid=BV1z1kyYuEfo&cid=27436123268&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
           </div>
         </div>
 
-        <!-- 视频 10 -->
+        <!-- 原视频 9 -->
         <div class="video-card">
           <div class="iframe-wrapper">
             <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113582876459635&bvid=BV1my6KYBENp&cid=27142065641&p=1&autoplay=0&high_quality=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
@@ -655,9 +801,9 @@
     <p>© Yaoyang Liu. All Rights Reserved.</p>
   </footer>
 
-  <!-- 交互逻辑 -->
+  <!-- 交互逻辑 JS -->
   <script>
-    // 切换主页面 Tab
+    // 页面 Tab 切换
     function switchTab(tabId, evt) {
       document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.remove('active');
@@ -674,7 +820,7 @@
       }
     }
 
-    // 筛选项目案例（影视 / 游戏 / 全部）
+    // 筛选项目案例
     function filterCases(category, evt) {
       document.querySelectorAll('.sub-filter-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -692,6 +838,55 @@
         }
       });
     }
+
+    // 音频播放控制逻辑
+    const audio = document.getElementById('global-audio');
+    const playBtn = document.getElementById('playlist-play-btn');
+    const trackName = document.getElementById('current-track-name');
+
+    function playTrack(element, name) {
+      const src = element.getAttribute('data-src');
+      
+      // 切换选中状态
+      document.querySelectorAll('.track-item').forEach(item => item.classList.remove('active'));
+      element.classList.add('active');
+      
+      trackName.innerText = name;
+
+      // 如果来源发生改变则加载新音频
+      if (audio.src !== src && !audio.src.endsWith(src)) {
+        audio.src = src;
+      }
+
+      audio.play().then(() => {
+        playBtn.innerText = '❚❚';
+      }).catch(err => {
+        console.log('未找到音频文件，请确认音频路径:', src);
+      });
+    }
+
+    function togglePlayMain() {
+      if (!audio.src) {
+        // 如果未选择，默认播放第一首
+        const firstTrack = document.querySelector('.track-item');
+        if (firstTrack) {
+          firstTrack.click();
+          return;
+        }
+      }
+
+      if (audio.paused) {
+        audio.play();
+        playBtn.innerText = '❚❚';
+      } else {
+        audio.paused ? audio.play() : audio.pause();
+        playBtn.innerText = audio.paused ? '▶' : '❚❚';
+      }
+    }
+
+    audio.onended = function() {
+      playBtn.innerText = '▶';
+    };
   </script>
 
 </body>
